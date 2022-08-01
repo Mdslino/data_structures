@@ -61,14 +61,14 @@ class LinkedList:
         self.length += 1
 
     def pop(self) -> Node:
-        poped_node = self.tail
-
         if self.is_empty:
             raise EmptyLinkedListError(
                 "The linked list is already empty and cannot use pop method"
             )
 
-        elif self.tail is self.head:
+        poped_node = self.tail
+
+        if self.tail is self.head:
             self.head = self.tail = None
             self.length -= 1
             return poped_node
