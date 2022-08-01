@@ -1,7 +1,5 @@
 from typing import Any
 
-from src.exceptions import EmptyLinkedListError
-
 
 class Node:
     def __init__(self, value) -> None:
@@ -27,12 +25,8 @@ class LinkedList:
         return self.length
 
     def __iter__(self):
-        if not self.is_empty:
-            self.__iter_node = self.head
-            return self
-        raise EmptyLinkedListError(
-            "The linked list is already empty and cannot be iterated"
-        )
+        self.__iter_node = self.head
+        return self
 
     def __next__(self):
         if self.__iter_node:
@@ -62,9 +56,7 @@ class LinkedList:
 
     def pop(self) -> Node:
         if self.is_empty:
-            raise EmptyLinkedListError(
-                "The linked list is already empty and cannot use pop method"
-            )
+            raise IndexError("pop from empty linked list")
 
         poped_node = self.tail
 
