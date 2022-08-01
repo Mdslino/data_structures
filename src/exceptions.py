@@ -1,0 +1,2 @@
+class EmptyLinkedListError(Exception):
+    pass
