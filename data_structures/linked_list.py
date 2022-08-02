@@ -2,6 +2,8 @@ from typing import Any
 
 
 class Node:
+    __slots__ = ("value", "next")
+
     def __init__(self, value) -> None:
         self.value = value
         self.next = None
@@ -40,6 +42,10 @@ class LinkedList:
     def is_empty(self) -> bool:
         return self.length == 0
 
+    @property
+    def is_single_node(self) -> bool:
+        return self.tail is self.head
+
     def append(self, value: Any) -> None:
         """
         Create a new Node and add Node to the end
@@ -54,13 +60,15 @@ class LinkedList:
 
         self.length += 1
 
+        return True
+
     def pop(self) -> Node:
         if self.is_empty:
             raise IndexError("pop from empty linked list")
 
         poped_node = self.tail
 
-        if self.tail is self.head:
+        if self.is_single_node:
             self.head = self.tail = None
             self.length -= 1
             return poped_node
@@ -72,16 +80,28 @@ class LinkedList:
         self.tail = last_item
         self.tail.next = None
         self.length -= 1
+
         return poped_node
 
     def prepend(self, value: Any) -> None:
         """
         Create a new Node and add Node to the beginning
         """
-        pass
+        new_node = Node(value)
+
+        if self.is_empty:
+            self.head = self.tail = new_node
+            self.length += 1
+            return True
+        else:
+            new_node.next = self.head
+            self.head = new_node
+            self.length += 1
 
     def insert(self, index: int, value: Any) -> None:
         """
         Create a new None and insert Node at given index
         """
         pass
+
+linked_list = LinkedList
