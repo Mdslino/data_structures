@@ -16,17 +16,6 @@ def test_linked_list_len():
     assert len(linket_list) == 1
 
 
-def test_linked_list_iter():
-    linked_list = LinkedList(1)
-
-    count = 0
-
-    for _ in linked_list:
-        count += 1
-
-    assert count == 1
-
-
 def test_linked_list_append_on_empty(empty_linked_list):
     assert empty_linked_list.head is None
     assert empty_linked_list.tail is None
@@ -63,12 +52,14 @@ def test_pop_linked_list():
 
     assert linked_list.head.value == 1
     assert linked_list.tail.value == 1
-    assert linked_list.head is linked_list.tail
+    assert linked_list.head == linked_list.tail
 
     linked_list.append(2)
 
     assert len(linked_list) == 2
-    assert linked_list.head is not linked_list.tail
+    assert linked_list.head.next is not None
+    assert linked_list.tail.next is None
+    assert linked_list.head != linked_list.tail
     assert linked_list.head.value == 1
     assert linked_list.tail.value == 2
 

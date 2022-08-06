@@ -1,12 +1,25 @@
-from typing import Any
+from typing import Any, Optional
 
 
 class Node:
     __slots__ = ("value", "next")
 
-    def __init__(self, value) -> None:
+    def __init__(self, value: Any) -> None:
         self.value = value
-        self.next = None
+        self.next: Optional["Node"] = None
+
+    def __repr__(self):
+        return f"Node(value={self.value}, next={self.next})"
+
+    def __str__(self):
+        return repr(self)
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, Node)
+            and self.value == other.value
+            and self.next == other.next
+        )
 
 
 class LinkedList:
@@ -15,8 +28,8 @@ class LinkedList:
         Create a new None
         """
         new_node = Node(value)
-        self.head: Node = new_node
-        self.tail: Node = new_node
+        self.head: Optional[Node] = new_node
+        self.tail: Optional[Node] = new_node
         self.__iter_node = None
         self.length: int = 1
 
@@ -26,27 +39,15 @@ class LinkedList:
         """
         return self.length
 
-    def __iter__(self):
-        self.__iter_node = self.head
-        return self
-
-    def __next__(self):
-        if self.__iter_node:
-            old_node = self.__iter_node
-            self.__iter_node = self.__iter_node.next
-            return old_node
-
-        raise StopIteration
-
     @property
     def is_empty(self) -> bool:
         return self.length == 0
 
     @property
     def is_single_node(self) -> bool:
-        return self.tail is self.head
+        return self.tail == self.head
 
-    def append(self, value: Any) -> None:
+    def append(self, value: Any) -> bool:
         """
         Create a new Node and add Node to the end
         """
@@ -54,6 +55,9 @@ class LinkedList:
 
         if self.is_empty:
             self.head = self.tail = new_node
+        elif self.is_single_node:
+            self.head.next = new_node
+            self.tail = new_node
         else:
             self.tail.next = new_node
             self.tail = new_node
@@ -73,17 +77,19 @@ class LinkedList:
             self.length -= 1
             return poped_node
 
-        for item in self:
-            if item.next is self.tail:
-                last_item = item
+        next_node = self.head
+        while next_node:
+            if next_node.next is self.tail:
+                break
+            next_node = next_node.next
 
-        self.tail = last_item
+        self.tail = next_node
         self.tail.next = None
         self.length -= 1
 
         return poped_node
 
-    def prepend(self, value: Any) -> None:
+    def prepend(self, value: Any) -> bool:
         """
         Create a new Node and add Node to the beginning
         """
@@ -92,16 +98,18 @@ class LinkedList:
         if self.is_empty:
             self.head = self.tail = new_node
             self.length += 1
-            return True
         else:
             new_node.next = self.head
             self.head = new_node
             self.length += 1
+
+        return True
 
     def insert(self, index: int, value: Any) -> None:
         """
         Create a new None and insert Node at given index
         """
         pass
+
 
 linked_list = LinkedList
