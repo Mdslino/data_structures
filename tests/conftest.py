@@ -1,9 +1,11 @@
 import pytest
+
 from data_structures.linked_list import LinkedList
+
 
 @pytest.fixture
 def empty_linked_list():
-    linked_list =LinkedList(1)
+    linked_list = LinkedList(1)
     linked_list.head = None
     linked_list.tail = None
     linked_list.length = 0
